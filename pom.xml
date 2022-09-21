@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>cl.bluex.redisson</groupId>
+  <artifactId>ms-redisson-lock</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>ms-redisson-lock</name>
+  <packaging>jar</packaging>
+  <description>Cloud Redisson Lock - k8s cronjob</description>
+
+  <properties>
+    <java.version>11</java.version>
+    <mongodb-driver-sync.version>3.11.0</mongodb-driver-sync.version>
+    <failOnMissingWebXml>false</failOnMissingWebXml>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <sonar.projectName>sonarRepoJava3</sonar.projectName>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>confluent</id>
+      <name>Confluent</name>
+      <url>https://packages.confluent.io/maven/</url>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>confluent</id>
+      <url>https://packages.confluent.io/maven/</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <dependencies>
+    <!-- tag::kafka-confluent[] -->
+    <dependency>
+      <groupId>org.apache.kafka</groupId>
+      <artifactId>kafka-clients</artifactId>
+      <version>7.0.1-ccs</version>
+    </dependency>
+    <!-- end::kafka-confluent[] -->
+    <!-- tag::mongodb[] -->
+    <dependency>
+      <groupId>org.mongodb</groupId>
+      <artifactId>mongodb-driver-sync</artifactId>
+      <version>${mongodb-driver-sync.version}</version>
+    </dependency>
+    <!-- end::mongodb[] -->
+    <!-- tag::jackson-mapper[] -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>2.13.0</version>
+    </dependency>
+    <!-- end::jackson-mapper[] -->
+	  <!-- tag::redisson[] -->
+	  <dependency>
+		  <groupId>org.redisson</groupId>
+		  <artifactId>redisson</artifactId>
+		  <version>3.13.4</version>
+	  </dependency>
+	  <!-- end::redisson[] -->
+	  <!-- tag::slf4j -->
+	  <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.26</version>
+    </dependency>
+	  <!-- end::slf4j -->
+	  <!-- tag::logback -->
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.2.3</version>
+    </dependency>
+	  <!-- end::logback -->
+	  <!-- tag::logstash -->
+    <dependency>
+      <groupId>net.logstash.logback</groupId>
+      <artifactId>logstash-logback-encoder</artifactId>
+      <version>5.2</version>
+    </dependency>
+	  <!-- end::logstash -->
+	  <!-- tag::lombok -->
+	  <dependency>
+		  <groupId>org.projectlombok</groupId>
+		  <artifactId>lombok</artifactId>
+		  <version>1.18.22</version>
+		  <scope>provided</scope>
+	  </dependency>
+	  <!-- end::lombok -->
+	  <!-- tag::google -->
+	  <dependency>
+		  <groupId>com.google.guava</groupId>
+		  <artifactId>guava</artifactId>
+		  <version>18.0</version>
+	  </dependency>
+	  <!-- end::google -->
+    <!-- tag::mongodb -->
+    <dependency>
+      <groupId>org.mongodb</groupId>
+      <artifactId>mongodb-driver-sync</artifactId>
+      <version>${mongodb-driver-sync.version}</version>
+    </dependency>
+  </dependencies>
+  <!-- end::mongodb -->
+  <build>
+    <finalName>ms-redisson-lock-${version}</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <mainClass>cl.bluex.PrincipalApplication</mainClass>
+            </manifest>
+          </archive>
+          <appendAssemblyId>false</appendAssemblyId>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id> <!-- this is used for inheritance merges -->
+            <phase>package</phase> <!-- bind to the packaging phase -->
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
